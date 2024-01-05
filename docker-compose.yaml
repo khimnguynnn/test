@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  web:
+    image: khimnguynn/odoo-web:v1.0.0
+    depends_on:
+      - mydb
+
+  mydb:
+    image: khimnguynn/odoo-postgres:v1.0.0
+    environment:
+    - POSTGRES_PASSWORD=odoo
+
+  nginx:
+    image: nginx:stable
+    depends_on:
+    - web
+    ports:
+    - "443:443"
+    volumes:
+    - ./certs:/etc/letsencrypt/
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
